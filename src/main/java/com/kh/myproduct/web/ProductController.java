@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -96,20 +97,42 @@ public class ProductController {
 
   //수정
   @PostMapping("/{id}/edit")
-  public String update(){
+  public String update(
+      @PathVariable("id") Long productId,
+      @ModelAttribute("form") UpdateForm updateForm,
+      RedirectAttributes redirectAttributes
+  ){
+    //데이터 검증
+    
+    Product product = new Product();
+    product.setProductId(productId);
+    product.setPname(updateForm.getPname());
+    product.setQuantity(updateForm.getQuantity());
+    product.setPrice(updateForm.getPrice());
+
+    productSVC.update(productId, product);
+
+    redirectAttributes.addAttribute("id",productId);
     return "redirect:/products/{id}/detail";
   }
 
   //삭제
   @GetMapping("/{id}/del")
-  public String deleteById(){
+  public String deleteById(@PathVariable("id") Long productId){
+
+    productSVC.delete(productId);
+
     return "redirect:/products";
   }
 
   //목록
   @GetMapping
-  public String findAll(){
-    return "products/all";
+  public String findAll(Model model){
+
+    List<Product> products = productSVC.findAll();
+    model.addAttribute("products",products);
+
+    return "product/all";
   }
 
 }

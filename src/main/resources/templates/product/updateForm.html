@@ -11,7 +11,7 @@
 <div class="wrap">
   <h3>상품수정</h3>
   <div>
-    <form action="" method="" th:object="${form}">
+    <form action="" method="post" th:object="${form}">
       <div>
         <label for="" >상품번호</label>
         <input type="text" name="productId" readonly th:field="*{productId}">
@@ -29,7 +29,7 @@
         <input type="text" name="price" th:field="*{price}">
       </div>
       <div>
-        <button type="button" id="btnSave">저장</button>
+        <button type="submit" id="btnSave">저장</button>
         <button type="button" id="btnCancel">취소</button>
         <button type="button" id="btnFindAll">목록</button>
       </div>
@@ -37,6 +37,15 @@
   </div>
 </div>
 <script>
+
+  const $btnCancel = document.getElementById('btnCancel');
+  const $btnFindAll = document.getElementById('btnFindAll');
+
+  const btnCancel_h = e => history.back()
+  const btnFindAll_h = e => location.href = '/products';
+
+  $btnCancel.addEventListener('click',btnCancel_h,false);
+  $btnFindAll.addEventListener('click',btnFindAll_h,false);
 
 </script>
 </body>
