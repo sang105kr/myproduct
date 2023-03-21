@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -111,6 +112,14 @@ public class ProductDAOImpl implements ProductDAO{
     return template.update(sql,Map.of("id",productId));
   }
 
+  @Override
+  public int deleteAll() {
+    String sql = "delete from product ";
+    Map<String,String> param = new LinkedHashMap<>();
+    int deletedRowCnt = template.update(sql, param);
+    return deletedRowCnt;
+  }
+
   /**
    * 목록
    *
@@ -186,7 +195,15 @@ public class ProductDAOImpl implements ProductDAO{
 
     Map<String,Long> param = Map.of("product_id",productId);
     Integer integer = template.queryForObject(sql, param, Integer.class);
-    isExist = (integer == 1) ? true : false;
+    isExist = (integer > 0) ? true : false;
     return isExist;
+  }
+
+  @Override
+  public int countOfRecord() {
+    String sql = "select count(*) from product ";
+    Map<String,String> param = new LinkedHashMap<>();
+    Integer rows = template.queryForObject(sql, param, Integer.class);
+    return rows;
   }
 }

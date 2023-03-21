@@ -38,4 +38,9 @@ public class ProductSVCImpl implements ProductSVC{
   public List<Product> findAll() {
     return productDAO.findAll();
   }
+
+  @Override
+  public boolean isExist(Long productId) {
+    return productDAO.isExist(productId);
+  }
 }

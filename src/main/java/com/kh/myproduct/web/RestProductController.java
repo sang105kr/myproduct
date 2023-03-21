@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RestProductController {
 
-  private final ProductSVC prodocuSvc;
+  private final ProductSVC productSVC;
 
   //상품등록
   @PostMapping
@@ -33,7 +33,7 @@ public class RestProductController {
     product.setQuantity(saveRest.getQuantity());
     product.setPrice(saveRest.getPrice());
 
-    Long productId = prodocuSvc.save(product);
+    Long productId = productSVC.save(product);
     product.setProductId(productId);
 
     if(productId > 0 ) {
@@ -46,9 +46,16 @@ public class RestProductController {
 
   //상품조회
   @GetMapping("/{id}")
-  public RestResponse<Object> findById(@PathVariable("id") Long id){
+  public RestResponse<Object> findById(@PathVariable("id") Long productId){
     RestResponse<Object> res = null;
-    Optional<Product> findedProduct = prodocuSvc.findById(id);
+
+    //1)상품존재유뮤판단
+    if(!productSVC.isExist(productId)){
+      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
+      return res;
+    }
+
+    Optional<Product> findedProduct = productSVC.findById(productId);
     res = RestResponse.createRestResponse("00", "성공", findedProduct);
     return res;
   }
@@ -63,13 +70,20 @@ public class RestProductController {
 
     //검증
 
-    //수정
+
+    //1)상품존재유뮤판단
+    if(!productSVC.isExist(productId)){
+      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
+      return res;
+    }
+
+    //2)수정
     Product product = new Product();
     product.setPname(updateRest.getPname());
     product.setQuantity(updateRest.getQuantity());
     product.setPrice(updateRest.getPrice());
 
-    int updatedRowCnt = prodocuSvc.update(productId, product);
+    int updatedRowCnt = productSVC.update(productId, product);
     updateRest.setProductId(productId);
 
     if(updatedRowCnt == 1 ) {
@@ -86,20 +100,27 @@ public class RestProductController {
   public RestResponse<Object> delete(@PathVariable("id") Long productId){
     RestResponse<Object> res = null;
 
+    //1)상품존재유뮤판단
+    if(!productSVC.isExist(productId)){
+      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
+      return res;
+    }
 
-    int deletedRowCnt = prodocuSvc.delete(productId);
+    //2)상품삭제
+    int deletedRowCnt = productSVC.delete(productId);
     if(deletedRowCnt == 1 ) {
       res = RestResponse.createRestResponse("00", "성공", null);
     }else{
       res = RestResponse.createRestResponse("99", "실패", "서버오류");
     }
+    return res;
   }
 
   //상품목록록
   @GetMapping
   public RestResponse<Object> findAll(){
     RestResponse<Object> res = null;
-    List<Product> list = prodocuSvc.findAll();
+    List<Product> list = productSVC.findAll();
     if(list.size() > 0) {
       res = RestResponse.createRestResponse("00", "성공", list);
     }else{

@@ -34,6 +34,12 @@ public interface ProductDAO {
   int delete(Long productId);
 
   /**
+   * 전체 삭제
+   * @return 삭제한 레코드 건수
+   */
+  int deleteAll();
+
+  /**
    * 목록
    * @return 상품목록
    */
@@ -45,4 +51,10 @@ public interface ProductDAO {
    * @return 
    */
   boolean isExist(Long productId);
+
+  /**
+   * 등록된 상품수
+   * @return 레코드 건수
+   */
+  int countOfRecord();
 }
