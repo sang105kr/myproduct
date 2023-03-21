@@ -178,4 +178,15 @@ public class ProductDAOImpl implements ProductDAO{
 
   //자동매핑 : 테이블의 컬럼명과 자바객체 타입의 멤버필드가 같아야한다.
   // BeanPropertyRowMapper.newInstance(자바객체타입)
+
+  @Override
+  public boolean isExist(Long productId) {
+    boolean isExist = false;
+    String sql = "select count(*) from product where product_id = :product_id";
+
+    Map<String,Long> param = Map.of("product_id",productId);
+    Integer integer = template.queryForObject(sql, param, Integer.class);
+    isExist = (integer == 1) ? true : false;
+    return isExist;
+  }
 }

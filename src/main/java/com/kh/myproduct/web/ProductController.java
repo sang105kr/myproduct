@@ -46,6 +46,7 @@ public class ProductController {
 //    log.info("pname={}, quantity={}, price={}",pname,quantity,price);
     log.info("saveForm={}",saveForm);
     //데이터 검증
+
     //등록
     Product product = new Product();
     product.setPname(saveForm.getPname());

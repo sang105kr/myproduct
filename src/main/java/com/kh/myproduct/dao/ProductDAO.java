@@ -38,4 +38,11 @@ public interface ProductDAO {
    * @return 상품목록
    */
   List<Product> findAll();
+
+  /**
+   * 상품존재유무
+   * @param productId 상품아이디
+   * @return 
+   */
+  boolean isExist(Long productId);
 }
