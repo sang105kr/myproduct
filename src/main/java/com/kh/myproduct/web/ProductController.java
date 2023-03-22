@@ -5,10 +5,12 @@ import com.kh.myproduct.svc.ProductSVC;
 import com.kh.myproduct.web.form.DetailForm;
 import com.kh.myproduct.web.form.SaveForm;
 import com.kh.myproduct.web.form.UpdateForm;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -29,8 +31,9 @@ public class ProductController {
 
   //등록양식
   @GetMapping("/add")
-  public String saveForm(){
-
+  public String saveForm(Model model){
+    SaveForm saveForm = new SaveForm();
+    model.addAttribute("form",saveForm);
     return "product/saveForm";
   }
 
@@ -40,11 +43,39 @@ public class ProductController {
 //      @Param("pname") String pname,
 //      @Param("quantity") Long quantity,
 //      @Param("price") Long price
-      @ModelAttribute SaveForm saveForm,
+      @Valid @ModelAttribute("form") SaveForm saveForm,
+      BindingResult bindingResult,  //검증 결과를 담는 객체
       RedirectAttributes redirectAttributes
       ){
 //    log.info("pname={}, quantity={}, price={}",pname,quantity,price);
     log.info("saveForm={}",saveForm);
+
+    // 필드오류
+    if(saveForm.getQuantity() == 100){
+      bindingResult.rejectValue("quantity","","수량 100 입력불가!");
+    }
+
+    if(bindingResult.hasErrors()){
+      log.info("bindingResult={}", bindingResult);
+      return "product/saveForm";
+    }
+
+    // 글로벌오류
+    // 총액(상품수량*단가) 1000만원 초과금지
+    if(saveForm.getQuantity() * saveForm.getPrice() > 10_000_000L){
+      bindingResult.reject("",null,"총액(상품수량*단가) 1000만원 초과할 수 없습니다!");
+
+    }
+    if(saveForm.getQuantity() > 1 && saveForm.getQuantity() <10){
+      bindingResult.reject("",null,"1~10 사이 합니다.");
+    }
+
+    if(bindingResult.hasErrors()){
+      log.info("bindingResult={}", bindingResult);
+      return "product/saveForm";
+    }
+
+
     //데이터 검증
 
     //등록

@@ -29,9 +29,9 @@
         <input type="text" name="price" th:field="*{price}">
       </div>
       <div>
-        <button type="submit" id="btnSave">저장</button>
-        <button type="button" id="btnCancel">취소</button>
-        <button type="button" id="btnFindAll">목록</button>
+        <button type="submit" id="btnSave" th:text="#{button.update}">저장</button>
+        <button type="button" id="btnCancel" th:text="#{button.cancel}">취소</button>
+        <button type="button" id="btnFindAll" th:text="#{button.list}">목록</button>
       </div>
     </form>
   </div>
