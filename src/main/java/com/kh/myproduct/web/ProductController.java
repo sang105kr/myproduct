@@ -50,14 +50,15 @@ public class ProductController {
 //    log.info("pname={}, quantity={}, price={}",pname,quantity,price);
     log.info("saveForm={}",saveForm);
 
-    // 필드오류
-    if(saveForm.getQuantity() == 100){
-      bindingResult.rejectValue("quantity","","수량 100 입력불가!");
-    }
-
+    //어노테이션 기반 검증
     if(bindingResult.hasErrors()){
       log.info("bindingResult={}", bindingResult);
       return "product/saveForm";
+    }
+
+    // 필드오류
+    if(saveForm.getQuantity() == 100){
+      bindingResult.rejectValue("quantity","","수량 100 입력불가!");
     }
 
     // 글로벌오류
@@ -74,7 +75,6 @@ public class ProductController {
       log.info("bindingResult={}", bindingResult);
       return "product/saveForm";
     }
-
 
     //데이터 검증
 
