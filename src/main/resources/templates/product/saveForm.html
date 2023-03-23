@@ -66,7 +66,7 @@
       clear();
     }
 
-    const regExp = /[0-9]/g;
+    const regExp = /[0-9]/;
     if(!regExp.test(quantity.value)){
       const msg = '숫자만 입력하세요';
       quantity.nextElementSibling.textContent = msg;
@@ -89,7 +89,6 @@
       const msg = '숫자만 입력하세요';
       price.nextElementSibling.textContent = msg;
       price.focus();
-      price.selected();
       return;
     }else {
       clear();
