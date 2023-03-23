@@ -6,40 +6,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title th:text="#{title.product.add}">상품등록</title>
-  <style>
-    .field-error {
-      font-size : 0.8em;
-      font-weight: bold;
-      color: red;
-    }
-  </style>
+  <link rel="stylesheet" href="" th:href="@{/css/common.css}">
 </head>
 <body>
-  <div class="wrap">
-    <h3 th:text="#{title.product.add}">상품등록</h3>
-    <div>
-      <form action="" method="post" th:object="${form}">
-        <div th:if="${#fields.hasGlobalErrors()}">
-          <p class="field-error" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
-        </div>
-        <div>
-          <label for="" th:text="#{label.product.pname}">상품명</label>
-          <input type="text" name="pname" th:field="*{pname}">
-          <span class="field-error" th:errors="*{pname}"></span>
-        </div>
-        <div>
-          <label for="" th:text="#{label.product.quantity}">수량</label>
-          <input type="text" name="quantity" th:field="*{quantity}">
-          <span class="field-error" th:errors="*{quantity}"></span>
-        </div>
-        <div>
-          <label for="" th:text="#{label.product.price}">가격</label>
-          <input type="text" name="price" th:field="*{price}">
-          <span class="field-error" th:errors="*{price}"></span>
-        </div>
-        <div><button type="submit" th:text="#{button.add(1,2,3)}">등록</button></div>
-      </form>
-    </div>
+<div class="wrap">
+  <h3 th:text="#{title.product.add}">상품등록</h3>
+  <div>
+    <form action="" method="post" th:object="${saveForm}">
+      <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+      </div>
+      <div>
+        <label for="pname" th:text="#{label.product.pname}">상품명</label>
+        <input type="text" name="pname" th:field="*{pname}">
+        <span class="field-error" th:errors="*{pname}"></span>
+      </div>
+      <div>
+        <label for="quantity" th:text="#{label.product.quantity}">수량</label>
+        <input type="text" name="quantity" th:field="*{quantity}">
+        <span class="field-error" th:errors="*{quantity}"></span>
+      </div>
+      <div>
+        <label for="price" th:text="#{label.product.price}">가격</label>
+        <input type="text" name="price" th:field="*{price}">
+        <span class="field-error" th:errors="*{price}"></span>
+      </div>
+      <div><button type="submit" th:text="#{button.add}">등록</button></div>
+    </form>
   </div>
+</div>
 </body>
 </html>
