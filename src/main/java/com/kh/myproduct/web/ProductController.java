@@ -169,8 +169,8 @@ public class ProductController {
 
     List<Product> products = productSVC.findAll();
     model.addAttribute("products",products);
-
-    return "product/all";
+    throw new RuntimeException("오류발생");
+//    return "product/all";
   }
 
 }
