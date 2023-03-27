@@ -15,7 +15,7 @@ public class RestBizException extends RuntimeException{
     super(message);
   }
 
-  public RestBizException(String message, String code) {
+  public RestBizException(String code, String message) {
     super(message);
     this.code = code;
   }
