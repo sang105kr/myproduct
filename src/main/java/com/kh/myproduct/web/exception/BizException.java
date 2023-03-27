@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class BizException extends RuntimeException{
+
   private String code;
 
   public BizException() {
@@ -18,7 +19,6 @@ public class BizException extends RuntimeException{
     super(message);
     this.code = code;
   }
-
   public BizException(String message, Throwable cause) {
     super(message, cause);
   }

@@ -2,7 +2,7 @@ package com.kh.myproduct.web;
 
 import com.kh.myproduct.dao.Product;
 import com.kh.myproduct.svc.ProductSVC;
-import com.kh.myproduct.web.exception.BizException;
+import com.kh.myproduct.web.exception.RestBizException;
 import com.kh.myproduct.web.rest.SaveRest;
 import com.kh.myproduct.web.rest.UpdateRest;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +54,7 @@ public class RestProductController {
     if(!productSVC.isExist(productId)){
 //      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
 //      return res;
-      throw new BizException("99","해당 상품이 없습니다.");
+      throw new RestBizException("99","해당 상품이 없습니다.");
     }
 
     Optional<Product> findedProduct = productSVC.findById(productId);
@@ -77,7 +77,7 @@ public class RestProductController {
     if(!productSVC.isExist(productId)){
 //      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
 //      return res;
-      throw new BizException("99","해당 상품이 없습니다.");
+      throw new RestBizException("99","해당 상품이 없습니다.");
     }
 
     //2)수정
@@ -107,7 +107,7 @@ public class RestProductController {
     if(!productSVC.isExist(productId)){
 //      res = RestResponse.createRestResponse("01", "해당 상품이 없습니다.", null);
 //      return res;
-      throw new BizException("99","해당 상품이 없습니다.");
+      throw new RestBizException("99","해당 상품이 없습니다.");
     }
 
     //2)상품삭제
