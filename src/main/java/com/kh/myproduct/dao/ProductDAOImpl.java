@@ -113,6 +113,13 @@ public class ProductDAOImpl implements ProductDAO{
   }
 
   @Override
+  public int deleteParts(List<Long> productIds) {
+    String sql = "delete from product where product_id in ( :ids ) ";
+    Map<String, List<Long>> param = Map.of("ids", productIds);
+    return template.update(sql,param);
+  }
+
+  @Override
   public int deleteAll() {
     String sql = "delete from product ";
     Map<String,String> param = new LinkedHashMap<>();

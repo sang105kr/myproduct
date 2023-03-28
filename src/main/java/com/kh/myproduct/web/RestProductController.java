@@ -132,4 +132,22 @@ public class RestProductController {
     }
     return res;
   }
+
+
+  //선택항목삭제
+  @PostMapping(value="/items/del")
+  public  RestResponse<Object> deleteItems(@RequestBody List<Long> ids){
+    RestResponse<Object> res = null;
+    log.info("ids={}",ids);
+    if(ids.size() < 1) {
+      res = RestResponse.createRestResponse("01", "삭제항목 미선택", null);
+      return res;
+    }
+    
+    int deletedRows = productSVC.deleteParts(ids);
+    if(deletedRows > 0) {
+      res = RestResponse.createRestResponse("00", "성공", deletedRows);
+    }
+    return res;
+  }
 }

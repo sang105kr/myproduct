@@ -2,7 +2,6 @@ package com.kh.myproduct.web;
 
 import com.kh.myproduct.dao.Product;
 import com.kh.myproduct.svc.ProductSVC;
-import com.kh.myproduct.web.exception.BizException;
 import com.kh.myproduct.web.form.DetailForm;
 import com.kh.myproduct.web.form.SaveForm;
 import com.kh.myproduct.web.form.UpdateForm;
@@ -171,9 +170,20 @@ public class ProductController {
     List<Product> products = productSVC.findAll();
     model.addAttribute("products",products);
     if (products.size() == 0) {
-      throw new BizException("등록된 상품정보가 없습니다");
+//      throw new BizException("등록된 상품정보가 없습니다");
     }
     return "product/all";
   }
 
+  //선택삭제
+  @PostMapping("/items/del")
+  public String deleteParts(@RequestParam("chk") List<Long> productIds){
+    log.info("productIds={}", productIds);
+    if(productIds.size() > 0) {
+      productSVC.deleteParts(productIds);
+    }else {
+      return "product/all";
+    }
+    return "redirect:/products";
+  }
 }

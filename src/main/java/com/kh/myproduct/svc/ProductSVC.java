@@ -14,6 +14,12 @@ public interface ProductSVC {
   int update(Long productId,Product product);
   //삭제
   int delete(Long productId);
+  /**
+   * 부분삭제
+   * @param productIds
+   * @return
+   */
+  int deleteParts(List<Long> productIds);
   //목록
   List<Product> findAll();
   /**

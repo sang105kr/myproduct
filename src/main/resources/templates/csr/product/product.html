@@ -20,7 +20,7 @@
       #productList .wrap .head,
       #productList .wrap .body {
         display: grid;
-        grid-template-columns: 50px 100px 50px 100px;
+        grid-template-columns: 50px 50px 100px 50px 100px;
         grid-auto-rows: 2em;
       }
 
@@ -97,9 +97,10 @@
     <!--상품목록-->
     <div id="productList">
       <h3>상품목록</h3>
-      <div><button id="listBtn">목록</button></div>
+      <div><button id="delPartsBtn">삭제</button><button id="listBtn">목록</button></div>
       <div class="wrap">
         <div class="head">
+          <div id="all">선택</div>
           <div>ID</div>
           <div>상품명</div>
           <div>수량</div>
@@ -171,7 +172,11 @@
 
       // 목록
       const makeRow = p =>
-        `<div>${p.productId}</div><div>${p.pname}</div><div>${p.quantity}</div><div>${p.price}</div>`;
+         `<div><input type='checkbox' name='chk' value='${p.productId}'/></div>` +
+         `<div>${p.productId}</div>` +
+         `<div>${p.pname}</div>` +
+         `<div>${p.quantity}</div>` +
+         `<div>${p.price}</div>`;
 
       const list = res => {
         if (res.header.rtcd == '00') {
@@ -361,6 +366,40 @@
         false,
       );
 
+      //삭제선택
+      const $all = document.getElementById('all');
+      const all_h = e => {
+        const $chks = document.querySelectorAll('#productList input[name=chk]');
+        //체크된 체그박스 갯수
+        const chkCnt = Array.from($chks).filter(input=>input.checked ).length;
+        if($chks.length == chkCnt){
+          Array.from($chks).forEach(input=>input.checked = false);
+        }else{
+          Array.from($chks).forEach(input=>input.checked = true);
+        }
+      }
+      $all.addEventListener('click',all_h,false);
+
+
+      //삭제선택처리
+      const $delPartsBtn = document.getElementById('delPartsBtn');
+      const delParts = res => {
+        if(res.header.rtcd == 0){
+          list_h();
+        }
+      }
+      const delParts_h = e =>{
+        if(!confirm('삭제하시겠습니까')) return;
+        const $chks = document.querySelectorAll('#productList input[name=chk]');
+        const chks = Array.from($chks).filter(input=>input.checked )
+                                      .map(input=>input.value)
+        const url = '/api/products/items/del';
+        ajax.post(url, chks)
+            .then(res=>res.json())
+            .then(delParts)
+            .catch(err => console.log(err.message));
+      }
+      $delPartsBtn.addEventListener('click',delParts_h,false);
       //목록 가져오기
       list_h();
     </script>
